@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<!--
+================================================================
+  版权声明 COPYRIGHT NOTICE
+================================================================
+  本工具（包含但不限于：原始程式码、计算逻辑、公式、版面
+  设计、文案）版权归 Eason Hii (Hii Kwang Yuan) 所有，
+  隶属 131 Kuching Property 品牌资产。
+
+  严禁在未经作者书面授权的情况下，以任何形式复制、修改、
+  反编译、转载、重新发布本工具的全部或部分内容，或将其
+  用于商业用途。任何未经授权的使用行为，作者保留追究法律
+  责任的权利。
+
+  This tool (including but not limited to its source code,
+  calculation logic, formulas, layout, and copy) is the
+  intellectual property of Eason Hii (Hii Kwang Yuan), and
+  a brand asset of 131 Kuching Property.
+
+  ALL RIGHTS RESERVED. Unauthorized copying, modification,
+  decompilation, redistribution, or commercial use of this
+  tool, in whole or in part, without prior written consent
+  from the author, is strictly prohibited. The author
+  reserves the right to pursue legal action against any
+  unauthorized use.
+
+  © 2026 Eason Hii / 131 Kuching Property
+  联系 Contact: +60176196938
+================================================================
+-->
+
+
+<html lang="zh" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=ai-legible&utm_source=comment&utm_medium=referral&utm_id=0c639a3e-bf58-4c54-879a-b7ac0364e57b
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta name="hosting-provider" content="Netlify">
+<meta name="netlify-deploy" content="https://netlify.new/?utm_campaign=ai-legible&amp;utm_source=meta&amp;utm_medium=referral&amp;utm_id=0c639a3e-bf58-4c54-879a-b7ac0364e57b">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">沙捞越房贷负担能力评估 · Eason 131Property</title>
+<style>
+  :root{
+    --bg:#E9E1CF;
+    --card:#F6F1E6;
+    --card-2:#EFE7D6;
+    --ink:#211C16;
+    --ink-soft:#5b5347;
+    --green:#2C4A3B;
+    --green-deep:#1c3229;
+    --gold:#8C6D1F;
+    --rust:#8B3A2B;
+    --line:rgba(33,28,22,0.16);
+    --line-strong:rgba(33,28,22,0.30);
+    --serif: Georgia, 'Times New Roman', 'Songti SC', serif;
+    --sans: 'Microsoft YaHei', 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:28px 20px 60px;}
+
+  /* ---------- Brand header ---------- */
+  .brandbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:14px;margin-bottom:22px;
+    border-bottom:1px solid var(--line-strong);
+    flex-wrap:wrap;gap:8px;
+  }
+  .brandmark-group{display:flex;align-items:center;gap:10px;}
+  .logo-img{height:34px;width:auto;display:block;}
+  .brandmark{font-family:var(--serif);font-size:14px;letter-spacing:0.03em;color:var(--green-deep);font-weight:700;}
+  .brandmark span{color:var(--ink-soft);font-weight:400;font-family:var(--sans);font-size:12px;margin-left:6px;}
+  .kicker{
+    font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);
+  }
+
+  h1{
+    font-family:var(--serif);
+    font-size:26px;
+    line-height:1.3;
+    margin:6px 0 8px;
+    color:var(--ink);
+  }
+  .sub{color:var(--ink-soft);font-size:14.5px;margin-bottom:26px;}
+
+  /* ---------- Step wizard ---------- */
+  .stepper{display:flex;gap:6px;margin-bottom:22px;}
+  .stepper .dot{flex:1;height:3px;background:var(--line-strong);border-radius:2px;overflow:hidden;}
+  .stepper .dot.active,.stepper .dot.done{background:var(--green);}
+
+  .step{display:none;}
+  .step.visible{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .step-eyebrow{
+    font-family:var(--serif);font-style:italic;color:var(--green);
+    font-size:13px;margin-bottom:4px;
+  }
+  .step-title{font-size:19px;font-weight:700;margin-bottom:18px;}
+
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block;font-size:13px;color:var(--ink-soft);margin-bottom:6px;
+  }
+  .field .hint{font-size:11.5px;color:var(--ink-soft);opacity:0.8;margin-top:4px;}
+  .req{font-size:10.5px;color:var(--rust);font-weight:600;letter-spacing:0.03em;margin-left:2px;}
+  input[type="number"], input[type="text"]{
+    width:100%;padding:12px 14px;font-size:16px;font-family:var(--sans);
+    border:1px solid var(--line-strong);border-radius:6px;background:#fff;color:var(--ink);
+  }
+  input:focus{outline:2px solid var(--green);outline-offset:1px;}
+
+  .rm-input{position:relative;}
+  .rm-input span{
+    position:absolute;left:14px;top:50%;transform:translateY(-50%);
+    color:var(--ink-soft);font-size:14px;pointer-events:none;
+  }
+  .rm-input input{padding-left:44px;}
+
+  .margin-row{display:flex;align-items:center;gap:8px;}
+  .margin-input-wrap{position:relative;flex:1;}
+  .margin-input-wrap input{padding-right:34px;}
+  .margin-input-wrap .margin-suffix{
+    position:absolute;right:14px;top:50%;transform:translateY(-50%);
+    color:var(--ink-soft);font-size:14px;pointer-events:none;
+  }
+  .margin-reset{
+    flex-shrink:0;padding:11px 14px;font-size:12.5px;color:var(--green);
+    background:var(--card-2);border:1px solid var(--line-strong);border-radius:6px;
+    cursor:pointer;white-space:nowrap;
+  }
+  .margin-reset:active{background:var(--line);}
+  .field .hint b{color:var(--ink);font-weight:600;}
+  .live-preview{
+    margin-top:10px;background:var(--card-2);border:1px solid var(--line);
+    border-radius:6px;padding:12px 14px;display:none;
+  }
+  .live-preview-row{
+    display:flex;justify-content:space-between;font-size:13.5px;color:var(--ink);
+    padding:3px 0;
+  }
+  .live-preview-row span:first-child{color:var(--ink-soft);}
+  .live-preview-row span:last-child{font-family:var(--serif);font-weight:600;}
+
+  .choice-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .choice-btn{
+    flex:1;min-width:120px;padding:12px 10px;text-align:center;
+    border:1px solid var(--line-strong);border-radius:6px;background:#fff;
+    cursor:pointer;font-size:14px;color:var(--ink);transition:.15s;
+  }
+  .choice-btn.selected{background:var(--green);color:#fff;border-color:var(--green);}
+
+  .nav-row{display:flex;justify-content:space-between;gap:12px;margin-top:26px;}
+  button.primary{
+    background:var(--green);color:#fff;border:none;border-radius:6px;
+    padding:13px 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--sans);
+    flex:1;
+  }
+  button.primary:hover{background:var(--green-deep);}
+  button.ghost{
+    background:transparent;color:var(--ink-soft);border:1px solid var(--line-strong);
+    border-radius:6px;padding:13px 18px;font-size:14.5px;cursor:pointer;font-family:var(--sans);
+  }
+  button:disabled{opacity:0.45;cursor:not-allowed;}
+
+  /* ---------- Results ---------- */
+  .report{display:none;}
+  .report.visible{display:block;animation:fade .4s ease;}
+
+  .statement-card{
+    background:var(--card);border:1px solid var(--line);border-radius:8px;
+    padding:22px 20px;margin-bottom:18px;
+  }
+  .statement-card h3{
+    font-family:var(--serif);font-size:15px;margin:0 0 14px;
+    color:var(--green-deep);border-bottom:1px solid var(--line);padding-bottom:10px;
+  }
+  .row{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px dashed var(--line);}
+  .row:last-child{border-bottom:none;}
+  .row .k{color:var(--ink-soft);}
+  .row .v{font-family:var(--serif);font-weight:700;}
+
+  .dsr-hero{text-align:center;padding:8px 0 4px;}
+  .dsr-num{font-family:var(--serif);font-size:52px;font-weight:700;color:var(--green-deep);line-height:1;}
+  .dsr-label{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px;}
+  .tier-badge{
+    display:inline-block;margin-top:10px;padding:5px 14px;border-radius:20px;
+    font-size:12.5px;font-weight:600;
+  }
+  .tier-good{background:rgba(44,74,59,0.14);color:var(--green-deep);}
+  .tier-mid{background:rgba(140,109,31,0.16);color:var(--gold);}
+  .tier-warn{background:rgba(139,58,43,0.14);color:var(--rust);}
+  .tier-bad{background:rgba(139,58,43,0.22);color:var(--rust);}
+  .tier-extreme{background:var(--rust);color:#fff;}
+
+  /* ledger bar */
+  .ledger-bar{position:relative;height:34px;background:var(--card-2);border:1px solid var(--line);border-radius:4px;margin:18px 0 8px;}
+  .ledger-fill{position:absolute;left:0;top:0;bottom:0;background:var(--green);border-radius:4px 0 0 4px;transition:width .6s ease;}
+  .ledger-tick{position:absolute;top:0;bottom:0;width:1px;background:var(--line-strong);}
+  .ledger-tick .tick-label{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--ink-soft);white-space:nowrap;}
+  .ledger-caption{font-size:11px;color:var(--ink-soft);text-align:right;margin-top:2px;}
+
+  table.afford{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px;}
+  table.afford th{
+    text-align:left;font-weight:600;color:var(--ink-soft);font-size:11px;
+    text-transform:uppercase;letter-spacing:.05em;padding:6px 4px;border-bottom:1px solid var(--line-strong);
+  }
+  table.afford td{padding:9px 4px;border-bottom:1px dashed var(--line);font-family:var(--serif);}
+  table.afford td.label{font-family:var(--sans);color:var(--ink-soft);}
+
+  .borneo-card{
+    background:var(--green-deep);color:#F6F1E6;border-radius:8px;padding:20px;margin-bottom:18px;
+  }
+  .borneo-card h3{font-family:var(--serif);font-size:15px;margin:0 0 10px;color:#fff;}
+  .borneo-card .row{border-bottom:1px dashed rgba(255,255,255,0.2);}
+  .borneo-card .row .k{color:rgba(246,241,230,0.7);}
+  .borneo-card .row .v{color:#fff;}
+  .borneo-note{font-size:12px;color:rgba(246,241,230,0.75);margin-top:12px;line-height:1.5;}
+
+  .advisor-note{
+    background:var(--card);border-left:3px solid var(--green);border-radius:0 8px 8px 0;
+    padding:18px 20px;margin-bottom:18px;
+  }
+  .advisor-note .signature{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--green-deep);margin-top:12px;}
+  .advisor-note p{margin:0;font-size:14.5px;color:var(--ink);}
+  .loading-dots{color:var(--ink-soft);font-size:13.5px;font-style:italic;}
+
+  .disclaimer{font-size:11.5px;color:var(--ink-soft);line-height:1.6;padding:14px 16px;background:var(--card-2);border-radius:6px;margin-bottom:20px;}
+
+  .cta{
+    background:var(--green);border-radius:10px;padding:24px 22px;text-align:center;color:#fff;
+  }
+  .cta .cta-line1{font-size:14.5px;opacity:0.9;margin-bottom:4px;}
+  .cta .cta-line2{font-family:var(--serif);font-size:19px;margin-bottom:16px;}
+  .cta a.wa-btn{
+    display:inline-block;background:#fff;color:var(--green-deep);text-decoration:none;
+    padding:13px 26px;border-radius:6px;font-weight:700;font-size:15px;
+  }
+  .cta .agent{margin-top:14px;font-size:12.5px;opacity:0.85;}
+
+  .restart{text-align:center;margin-top:18px;display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+  .restart button{background:none;border:none;color:var(--ink-soft);font-size:12.5px;text-decoration:underline;cursor:pointer;font-family:var(--sans);}
+  .lang-toggle{
+    display:flex;border:1px solid var(--line-strong);border-radius:20px;overflow:hidden;
+    font-size:11.5px;flex-shrink:0;width:fit-content;margin-bottom:16px;
+  }
+  .lang-toggle button{
+    background:transparent;border:none;padding:6px 12px;cursor:pointer;color:var(--ink-soft);
+    font-family:var(--sans);font-weight:600;
+  }
+  .lang-toggle button.active{background:var(--green);color:#fff;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brandbar">
+    <div class="brandmark-group">
+      <img src="data:image/png;base64,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" alt="131 Kuching Property" class="logo-img">
+      <div class="brandmark">131 KUCHING PROPERTY <span>· Eason</span></div>
+    </div>
+    <div class="kicker" data-i18n="kicker">Sarawak DSR Tool</div>
+  </div>
+
+  <h1 data-i18n="h1">你能负担多少间房子？</h1>
+  <p class="sub" data-i18n="sub">花 2 分钟填资料，用马来西亚现行 DSR 逻辑，估算你的房贷负担能力 —— 含 Sarawak 公职人员专属方案对比。</p>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- STEP 1 -->
+  <div class="step visible" data-step="1">
+    <div class="step-eyebrow">Section 01</div>
+    <div class="lang-toggle" id="langToggle">
+      <button type="button" data-lang="zh" class="active">中文</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+    <div class="step-title" data-i18n="step1_title">基本资料</div>
+
+    <div class="field">
+      <label><span data-i18n="age_label">你的年龄</span> <span class="req" data-i18n="req">*必填</span></label>
+      <input type="number" id="age" placeholder="例如 30" data-i18n-placeholder="age_ph" inputmode="numeric">
+    </div>
+
+    <div class="field">
+      <label data-i18n="rank_label">这是你的第几套房贷？</label>
+      <div class="choice-row" id="rank-choice">
+        <div class="choice-btn selected" data-value="1or2" data-i18n="rank_1or2">第 1 / 2 套</div>
+        <div class="choice-btn" data-value="3plus" data-i18n="rank_3plus">第 3 套或以上</div>
+      </div>
+      <div class="hint" data-i18n="rank_hint">房贷套数会影响银行的最高融资成数（margin of finance）。</div>
+    </div>
+
+    <div class="field">
+      <label data-i18n="govt_label">你是 Sarawak 州政府 / 法定机构 / 议会（council）员工吗？</label>
+      <div class="choice-row" id="govt-choice">
+        <div class="choice-btn" data-value="yes" data-i18n="yes">是</div>
+        <div class="choice-btn selected" data-value="no" data-i18n="no">不是</div>
+      </div>
+      <div class="hint" data-i18n="govt_hint">若符合资格，可另外对比 Borneo Housing Loan（BHMFB）政府官员购屋计划的方案。</div>
+    </div>
+
+    <div class="nav-row">
+      <span></span>
+      <button class="primary" id="next1" onclick="goStep(2)" disabled data-i18n="next">下一步</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" data-step="2">
+    <div class="step-eyebrow">Section 02</div>
+    <div class="step-title" data-i18n="step2_title">收入</div>
+
+    <div class="field">
+      <label data-i18n="income_mode_label">你比较清楚哪一种数字？</label>
+      <div class="choice-row" id="income-mode-choice">
+        <div class="choice-btn selected" data-value="gross" data-i18n="income_gross">基本薪资 + 津贴（我们帮你估算到手）</div>
+        <div class="choice-btn" data-value="net" data-i18n="income_net">我已经知道到手 Net Salary</div>
+      </div>
+    </div>
+
+    <div id="income-mode-gross">
+      <div class="field">
+        <label><span data-i18n="basic_label">每月基本薪资</span> <span class="req" data-i18n="req">*必填</span></label>
+        <div class="rm-input"><span>RM</span><input type="number" id="basic" inputmode="numeric"></div>
+        <div class="hint" data-i18n="basic_hint">这里填税前基本薪资，我们会自动扣除大约的 EPF/SOCSO/所得税来估算到手金额。</div>
+      </div>
+      <div class="field">
+        <label data-i18n="allowance_label">固定津贴（没有填 0）</label>
+        <div class="rm-input"><span>RM</span><input type="number" id="allowance" value="0" inputmode="numeric"></div>
+      </div>
+    </div>
+
+    <div id="income-mode-net" style="display:none;">
+      <div class="field">
+        <label><span data-i18n="netSalary_label">实际到手薪资 Net Salary</span> <span class="req" data-i18n="req">*必填</span></label>
+        <div class="rm-input"><span>RM</span><input type="number" id="netSalary" inputmode="numeric"></div>
+        <div class="hint" data-i18n="netSalary_hint">扣除 EPF、SOCSO、所得税之后，每个月真正入你户口的金额（不含佣金/OT）。</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label data-i18n="commission_label">平均每月佣金 / OT / 其他浮动收入（没有填 0）</label>
+      <div class="rm-input"><span>RM</span><input type="number" id="commission" value="0" inputmode="numeric"></div>
+      <div class="hint" data-i18n="commission_hint">这部分不算进上面的薪资里——银行通常只认可 50–80%，我们会分别呈现两种情境给你看。</div>
+    </div>
+
+    <div class="nav-row">
+      <button class="ghost" onclick="goStep(1)" data-i18n="back">上一步</button>
+      <button class="primary" id="next2" onclick="goStep(3)" disabled data-i18n="next">下一步</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" data-step="3">
+    <div class="step-eyebrow">Section 03</div>
+    <div class="step-title" data-i18n="step3_title">现有每月负债</div>
+
+    <div class="field"><label data-i18n="carLoan_label">车贷</label><div class="rm-input"><span>RM</span><input type="number" id="carLoan" value="0" inputmode="numeric"></div></div>
+    <div class="field"><label data-i18n="existingHomeLoan_label">现有房贷</label><div class="rm-input"><span>RM</span><input type="number" id="existingHomeLoan" value="0" inputmode="numeric"></div></div>
+    <div class="field"><label data-i18n="personalLoan_label">个人贷款</label><div class="rm-input"><span>RM</span><input type="number" id="personalLoan" value="0" inputmode="numeric"></div></div>
+    <div class="field"><label data-i18n="creditCard_label">信用卡每月最低还款额</label><div class="rm-input"><span>RM</span><input type="number" id="creditCard" value="0" inputmode="numeric"></div></div>
+    <div class="field"><label data-i18n="ptptn_label">PTPTN 每月供款</label><div class="rm-input"><span>RM</span><input type="number" id="ptptn" value="0" inputmode="numeric"></div></div>
+    <div class="field"><label data-i18n="asbFinancing_label">ASB Financing 每月供款</label><div class="rm-input"><span>RM</span><input type="number" id="asbFinancing" value="0" inputmode="numeric"></div></div>
+    <div class="field"><label data-i18n="bnplOther_label">BNPL / 其他债务每月供款</label><div class="rm-input"><span>RM</span><input type="number" id="bnplOther" value="0" inputmode="numeric"></div></div>
+
+    <div class="nav-row">
+      <button class="ghost" onclick="goStep(2)" data-i18n="back">上一步</button>
+      <button class="primary" onclick="goStep(4)" data-i18n="next">下一步</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" data-step="4">
+    <div class="step-eyebrow">Section 04</div>
+    <div class="step-title" data-i18n="step4_title">目标房价</div>
+
+    <div class="field">
+      <label><span data-i18n="targetPrice_label">想买的房价</span> <span class="req" data-i18n="req">*必填</span></label>
+      <div class="rm-input"><span>RM</span><input type="number" id="targetPrice" placeholder="例如 700000" data-i18n-placeholder="targetPrice_ph" inputmode="numeric"></div>
+      <div class="hint" data-i18n="targetPrice_hint">还没决定的话，可以先填一个你正在考虑的项目价格，之后随时重新计算。</div>
+    </div>
+
+    <div class="field">
+      <label data-i18n="margin_label">贷款成数（Margin of Finance）</label>
+      <div class="margin-row">
+        <div class="margin-input-wrap">
+          <input type="number" id="marginPercent" min="0" max="100" step="1" inputmode="numeric">
+          <span class="margin-suffix">%</span>
+        </div>
+        <button type="button" class="margin-reset" id="marginResetBtn" data-i18n="margin_reset">恢复默认</button>
+      </div>
+      <div class="hint" id="marginHintText"></div>
+      <div class="live-preview" id="livePreview">
+        <div class="live-preview-row"><span data-i18n="live_loan">预计贷款额</span><span id="liveLoanAmount">--</span></div>
+        <div class="live-preview-row"><span data-i18n="live_down">需自备头期</span><span id="liveDownpayment">--</span></div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="ghost" onclick="goStep(3)" data-i18n="back">上一步</button>
+      <button class="primary" id="calcBtn" onclick="runCalculation()" disabled data-i18n="calc_btn">开始计算</button>
+    </div>
+  </div>
+
+  <!-- REPORT -->
+  <div class="report" id="report">
+
+    <div class="statement-card">
+      <h3 data-i18n="report_current_dsr">现有 DSR</h3>
+      <div class="dsr-hero">
+        <div class="dsr-num" id="currentDsrNum">--%</div>
+        <div class="dsr-label" data-i18n="dsr_sub">Current Debt Service Ratio</div>
+      </div>
+      <div class="row"><span class="k" data-i18n="total_debts">每月债务总额</span><span class="v" id="existingDebtsOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="recognized_income">认可收入（保守情境）</span><span class="v" id="incomeConsOut">--</span></div>
+    </div>
+
+    <div class="statement-card">
+      <h3><span data-i18n="target_property">目标房产：</span><span id="targetPriceOut"></span></h3>
+      <div class="row"><span class="k" data-i18n="report_margin">融资成数（margin of finance）</span><span class="v" id="marginOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="report_tenure">贷款年限</span><span class="v" id="tenureOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="report_rate">参考利率（市场区间 3.5%–4.6%，默认）</span><span class="v" id="rateOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="report_loan">预计贷款额</span><span class="v" id="loanAmountOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="report_installment">预计月供</span><span class="v" id="installmentOut">--</span></div>
+
+      <div class="ledger-bar" id="ledgerBar">
+        <div class="ledger-fill" id="ledgerFill"></div>
+        <div class="ledger-tick" style="left:60%"><div class="tick-label">60%</div></div>
+        <div class="ledger-tick" style="left:70%"><div class="tick-label">70%</div></div>
+        <div class="ledger-tick" style="left:75%"><div class="tick-label">75%</div></div>
+      </div>
+      <div class="ledger-caption" data-i18n="ledger_caption">买入后 DSR（保守情境）</div>
+
+      <div style="text-align:center;margin-top:14px;">
+        <span class="tier-badge" id="tierBadge">--</span>
+      </div>
+
+      <div class="row" style="margin-top:14px;"><span class="k" data-i18n="post_dsr_cons">买入后 DSR（保守）</span><span class="v" id="postDsrConsOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="post_dsr_comm">买入后 DSR（若佣金认可 65%）</span><span class="v" id="postDsrCommOut">--</span></div>
+    </div>
+
+    <div class="statement-card">
+      <h3 data-i18n="budget_range">你的大概预算区间</h3>
+      <table class="afford">
+        <thead><tr><th data-i18n="th_scenario">DSR 情景</th><th data-i18n="th_cons">保守收入</th><th data-i18n="th_comm">含佣金收入</th></tr></thead>
+        <tbody id="affordTableBody"></tbody>
+      </table>
+      <div class="hint" style="margin-top:10px;" data-i18n="dsr_threshold_hint">DSR 门槛并非官方硬性规定 —— 马来西亚央行(BNM)未公布统一上限，各银行内部标准不同。60–70% 是市场上常见的观察区间，高收入者部分银行可能放宽到 80%。</div>
+    </div>
+
+    <div class="borneo-card" id="borneoCard" style="display:none;">
+      <h3 data-i18n="borneo_title">🏛 Sarawak 政府官员购屋计划对比（Borneo Housing Loan）</h3>
+      <div class="row"><span class="k" data-i18n="borneo_rate">利率</span><span class="v" id="borneoRateOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="report_margin_short">融资成数</span><span class="v" id="borneoMarginOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="report_tenure">贷款年限</span><span class="v" id="borneoTenureOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="report_loan">预计贷款额</span><span class="v" id="borneoLoanOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="report_installment">预计月供</span><span class="v" id="borneoInstallmentOut">--</span></div>
+      <div class="row"><span class="k" data-i18n="borneo_post_dsr">买入后 DSR</span><span class="v" id="borneoDsrOut">--</span></div>
+      <div class="borneo-note" data-i18n="borneo_note">此方案由 Borneo Housing Mortgage Finance Berhad (BHMFB) 提供，仅限 Sarawak/Sabah 州政府官员、法定机构及议会员工（Employer's Guarantee Scheme）。贷款额度一般介于 RM200,000–RM750,000，视净收入而定。实际资格与额度以 BHMFB 审批为准。</div>
+    </div>
+
+    <div class="advisor-note">
+      <p id="advisorText"></p>
+      <div class="signature">— Eason, 131Property</div>
+    </div>
+
+    <div class="disclaimer" data-i18n="disclaimer">
+      ⚠️ 以上为一般性房贷负担能力初步估算，并非银行的正式贷款审批结果。实际贷款额度会因银行信贷政策、CCRIS/CTOS 记录、收入认定方式、房产类型、贷款年限、利率及其他因素而有所不同。最终以银行审批 Offer Letter 为准。
+    </div>
+
+    <div class="cta">
+      <div class="cta-line1" data-i18n="cta_line1">现在你大概知道预算了。</div>
+      <div class="cta-line2" data-i18n="cta_line2">我是 Eason，专做古晋房产。</div>
+      <a class="wa-btn" id="waLink" href="#" target="_blank" data-i18n="cta_wa">PM 我 — 看这个价位有哪些项目</a>
+      <div class="agent">📱 +60 17-619 6938 · 131Property</div>
+    </div>
+
+    <div class="restart">
+      <button onclick="editData()" data-i18n="edit_data">← 修改资料重新算</button>
+      <span style="opacity:0.4;">·</span>
+      <button onclick="restartTool()" data-i18n="restart_tool">清空重新开始</button>
+    </div>
+  </div>
+
+</div>
+
+<script>function e(e,t,n){return Math.max(5,Math.min(n,t-e))}function t(e,t,n){const o=t/100/12,a=12*n;if(e<=0||a<=0)return 0;if(0===o)return e/a;const r=Math.pow(1+o,a);return e*o*r/(r-1)}function n(e,t,n){const o=t/100/12,a=12*n;if(e<=0||a<=0)return 0;if(0===o)return e*a;const r=Math.pow(1+o,a);return e*(r-1)/(o*r)}function o(e,t){return"3plus"===t?.7:.9}function a(e){return e<=50?{tone:"good"}:e<=65?{tone:"mid"}:e<=75?{tone:"warn"}:e<=150?{tone:"bad"}:{tone:"extreme"}}function r(e){return m("tier_"+e)}function i(e){return"RM"+Math.round(e).toLocaleString("en-US")}function s(a){const{age:r,homeLoanRank:i,isSarawakGovt:s,basic:l,allowance:c,commission:m,netSalaryInput:u,carLoan:d,existingHomeLoan:g,personalLoan:h,creditCard:p,ptptn:y,asbFinancing:b,bnplOther:_,targetPrice:f,marginOverride:v}=a,S=d+g+h+p+y+b+_,x=u>0?u:Math.round(.89*(l+c)),w=x+Math.round(.65*m),R=S/x*100,B=o(f,i),k=v&&v>0?v/100:B,D=k<B-.001,E=e(r,70,35),C=3.8,I=f*k,M=t(I,C,E),L=(S+M)/x*100,F=(S+M)/w*100,P=[60,70,75].map(e=>({ceiling:e,maxBudgetC:n(e/100*x-S,C,E)/k,maxBudgetW:n(e/100*w-S,C,E)/k}));let T=null;if(s){const n=e(r,70,40),o=3,a=Math.min(1*f,75e4),i=t(a,o,n);T={tenure:n,rate:o,loan:a,installment:i,postDSR:(S+i)/x*100}}return{existingDebts:S,incomeConservative:x,incomeWithCommission:w,currentDSR:R,margin:k,bankMaxMargin:B,marginIsCustom:D,tenure:E,rate:C,loanAmount:I,downpayment:f-I,installment:M,postDSR_conservative:L,postDSR_withCommission:F,scenarios:P,borneo:T,targetPrice:f}}const l={zh:{kicker:"Sarawak DSR Tool",h1:"你能负担多少间房子？",sub:"花 2 分钟填资料，用马来西亚现行 DSR 逻辑，估算你的房贷负担能力 —— 含 Sarawak 公职人员专属方案对比。",step1_title:"基本资料",age_label:"你的年龄",req:"*必填",age_ph:"例如 30",rank_label:"这是你的第几套房贷？",rank_1or2:"第 1 / 2 套",rank_3plus:"第 3 套或以上",rank_hint:"房贷套数会影响银行的最高融资成数（margin of finance）。",govt_label:"你是 Sarawak 州政府 / 法定机构 / 议会（council）员工吗？",yes:"是",no:"不是",govt_hint:"若符合资格，可另外对比 Borneo Housing Loan（BHMFB）政府官员购屋计划的方案。",next:"下一步",back:"上一步",step2_title:"收入",income_mode_label:"你比较清楚哪一种数字？",income_gross:"基本薪资 + 津贴（我们帮你估算到手）",income_net:"我已经知道到手 Net Salary",basic_label:"每月基本薪资",basic_hint:"这里填税前基本薪资，我们会自动扣除大约的 EPF/SOCSO/所得税来估算到手金额。",allowance_label:"固定津贴（没有填 0）",netSalary_label:"实际到手薪资 Net Salary",netSalary_hint:"扣除 EPF、SOCSO、所得税之后，每个月真正入你户口的金额（不含佣金/OT）。",commission_label:"平均每月佣金 / OT / 其他浮动收入（没有填 0）",commission_hint:"这部分不算进上面的薪资里——银行通常只认可 50–80%，我们会分别呈现两种情境给你看。",step3_title:"现有每月负债",carLoan_label:"车贷",existingHomeLoan_label:"现有房贷",personalLoan_label:"个人贷款",creditCard_label:"信用卡每月最低还款额",ptptn_label:"PTPTN 每月供款",asbFinancing_label:"ASB Financing 每月供款",bnplOther_label:"BNPL / 其他债务每月供款",step4_title:"目标房价",targetPrice_label:"想买的房价",targetPrice_ph:"例如 700000",targetPrice_hint:"还没决定的话，可以先填一个你正在考虑的项目价格，之后随时重新计算。",margin_label:"贷款成数（Margin of Finance）",margin_reset:"恢复默认",margin_hint_pre:"已按你的房贷套数，带出一般银行常见的起始成数 ",margin_hint_post:"（第3套起银行最高只能贷70%，这是BNM明文规定）。90%以下的成数每家银行标准不同，实际能贷多少，最终以银行审批为准，可以把这个数字往下调看看不同成数的差别。",live_loan:"预计贷款额",live_down:"需自备头期",calc_btn:"开始计算",calculating:"计算中…",alert_gross:"请至少填写年龄、基本薪资、目标房价",alert_net:"请至少填写年龄、到手薪资、目标房价",report_current_dsr:"现有 DSR",dsr_sub:"Current Debt Service Ratio",total_debts:"每月债务总额",recognized_income:"认可收入（保守情境）",target_property:"目标房产：",report_margin:"融资成数（margin of finance）",report_margin_short:"融资成数",report_tenure:"贷款年限",report_rate:"参考利率（市场区间 3.5%–4.6%，默认）",report_loan:"预计贷款额",report_installment:"预计月供",ledger_caption:"买入后 DSR（保守情境）",post_dsr_cons:"买入后 DSR（保守）",post_dsr_comm:"买入后 DSR（若佣金认可 65%）",budget_range:"你的大概预算区间",th_scenario:"DSR 情景",th_cons:"保守收入",th_comm:"含佣金收入",dsr_threshold_hint:"DSR 门槛并非官方硬性规定 —— 马来西亚央行(BNM)未公布统一上限，各银行内部标准不同。60–70% 是市场上常见的观察区间，高收入者部分银行可能放宽到 80%。",borneo_title:"🏛 Sarawak 政府官员购屋计划对比（Borneo Housing Loan）",borneo_rate:"利率",borneo_post_dsr:"买入后 DSR",borneo_note:"此方案由 Borneo Housing Mortgage Finance Berhad (BHMFB) 提供，仅限 Sarawak/Sabah 州政府官员、法定机构及议会员工（Employer's Guarantee Scheme）。贷款额度一般介于 RM200,000–RM750,000，视净收入而定。实际资格与额度以 BHMFB 审批为准。",borneo_margin_full:"最高 100%",disclaimer:"⚠️ 以上为一般性房贷负担能力初步估算，并非银行的正式贷款审批结果。实际贷款额度会因银行信贷政策、CCRIS/CTOS 记录、收入认定方式、房产类型、贷款年限、利率及其他因素而有所不同。最终以银行审批 Offer Letter 为准。",cta_line1:"现在你大概知道预算了。",cta_line2:"我是 Eason，专做古晋房产。",cta_wa:"PM 我 — 看这个价位有哪些项目",edit_data:"← 修改资料重新算",restart_tool:"清空重新开始",tier_good:"Comfortable · 舒服",tier_mid:"Moderate · 中等",tier_warn:"Tight · 偏紧",tier_bad:"Likely Difficult · 较吃力",tier_extreme:"Far Beyond Reach · 严重超出负担",month_suffix:"/月",year_suffix:" 年",rate_suffix:"% p.a.（估算基准）",page_title:"沙捞越房贷负担能力评估 · Eason 131Property"},en:{kicker:"Sarawak DSR Tool",h1:"How Much House Can You Afford?",sub:"Two minutes of info, using Malaysia's DSR framework, to estimate your home loan affordability — including a comparison for Sarawak government employees.",step1_title:"Basic Info",age_label:"Your Age",req:"*Required",age_ph:"e.g. 30",rank_label:"Which home loan is this for you?",rank_1or2:"1st / 2nd loan",rank_3plus:"3rd loan or more",rank_hint:"The number of housing loans you hold affects the bank’s maximum margin of finance.",govt_label:"Are you a Sarawak state government / statutory body / council employee?",yes:"Yes",no:"No",govt_hint:"If eligible, we’ll also compare the Borneo Housing Loan (BHMFB) scheme for government employees.",next:"Next",back:"Back",step2_title:"Income",income_mode_label:"Which figure do you know better?",income_gross:"Basic salary + allowance (we'll estimate your take-home)",income_net:"I already know my net salary",basic_label:"Monthly basic salary",basic_hint:"Enter your pre-tax basic salary — we'll automatically deduct roughly EPF/SOCSO/tax to estimate your take-home.",allowance_label:"Fixed allowance (enter 0 if none)",netSalary_label:"Actual net salary",netSalary_hint:"The amount that actually lands in your account each month after EPF, SOCSO, and tax (excluding commission/OT).",commission_label:"Average monthly commission / OT / other variable income (enter 0 if none)",commission_hint:"This is separate from the salary above — banks usually only recognize 50–80% of it, so we'll show you both scenarios.",step3_title:"Current Monthly Debts",carLoan_label:"Car loan",existingHomeLoan_label:"Existing home loan",personalLoan_label:"Personal loan",creditCard_label:"Credit card minimum monthly payment",ptptn_label:"PTPTN monthly payment",asbFinancing_label:"ASB Financing monthly payment",bnplOther_label:"BNPL / other debt monthly payment",step4_title:"Target Property Price",targetPrice_label:"Property price you're targeting",targetPrice_ph:"e.g. 700000",targetPrice_hint:"Not sure yet? Enter a price you're currently considering — you can always recalculate later.",margin_label:"Margin of Finance",margin_reset:"Reset to default",margin_hint_pre:"Based on your loan count, this defaults to the common starting margin banks offer: ",margin_hint_post:" (from the 3rd loan onward, banks are capped at 70% by explicit BNM rule). Margins below that vary bank to bank, so treat this as a working estimate — final approval sets the real number. Adjust it to see how a bigger downpayment changes things.",live_loan:"Estimated loan amount",live_down:"Downpayment needed",calc_btn:"Calculate",calculating:"Calculating…",alert_gross:"Please fill in at least your age, basic salary, and target price.",alert_net:"Please fill in at least your age, net salary, and target price.",report_current_dsr:"Current DSR",dsr_sub:"Current Debt Service Ratio",total_debts:"Total monthly debt",recognized_income:"Recognized income (conservative)",target_property:"Target property: ",report_margin:"Margin of finance",report_margin_short:"Margin of finance",report_tenure:"Loan tenure",report_rate:"Reference rate (market range 3.5%–4.6%, default)",report_loan:"Estimated loan amount",report_installment:"Estimated monthly installment",ledger_caption:"Post-purchase DSR (conservative)",post_dsr_cons:"Post-purchase DSR (conservative)",post_dsr_comm:"Post-purchase DSR (if 65% commission recognized)",budget_range:"Your Rough Budget Range",th_scenario:"DSR Scenario",th_cons:"Conservative Income",th_comm:"With Commission",dsr_threshold_hint:"DSR thresholds aren't an official hard rule — Bank Negara Malaysia (BNM) hasn't published a uniform cap, and each bank sets its own internal standard. 60–70% is the commonly observed range in the market; some banks may stretch to 80% for higher earners.",borneo_title:"🏛 Sarawak Government Home Loan Comparison (Borneo Housing Loan)",borneo_rate:"Interest rate",borneo_post_dsr:"Post-purchase DSR",borneo_note:"This scheme is offered by Borneo Housing Mortgage Finance Berhad (BHMFB), exclusively for Sarawak/Sabah state government, statutory body, and council employees (Employer's Guarantee Scheme). Loan amounts generally range from RM200,000–RM750,000 depending on net income. Actual eligibility and amount are subject to BHMFB approval.",borneo_margin_full:"Up to 100%",disclaimer:"⚠️ The above is a general preliminary estimate of home loan affordability, not an official bank loan approval. Actual loan amounts vary based on the bank's credit policy, CCRIS/CTOS records, income assessment method, property type, loan tenure, interest rate, and other factors. The bank's official Offer Letter is final.",cta_line1:"Now you have a rough budget in mind.",cta_line2:"I'm Eason, specializing in Kuching property.",cta_wa:"Message me — see what's available at this price",edit_data:"← Edit info and recalculate",restart_tool:"Clear and start over",tier_good:"Comfortable",tier_mid:"Moderate",tier_warn:"Tight",tier_bad:"Likely Difficult",tier_extreme:"Far Beyond Reach",month_suffix:"/mo",year_suffix:" yrs",rate_suffix:"% p.a. (est. default)",page_title:"Sarawak Home Loan Affordability Check · Eason 131Property"}};let c="zh";function m(e){return void 0!==l[c][e]?l[c][e]:e}function u(){document.querySelectorAll("[data-i18n]").forEach(e=>{const t=e.getAttribute("data-i18n");void 0!==l[c][t]&&(e.textContent=l[c][t])}),document.querySelectorAll("[data-i18n-placeholder]").forEach(e=>{const t=e.getAttribute("data-i18n-placeholder");void 0!==l[c][t]&&(e.placeholder=l[c][t])}),document.getElementById("htmlRoot").lang=c,document.getElementById("pageTitle").textContent=m("page_title")}let d=1;const g=4;let h={homeLoanRank:"1or2",isSarawakGovt:!1},p=!1;function y(){const e=document.getElementById("stepper");e.innerHTML="";for(let t=1;t<=4;t++){const n=document.createElement("div");n.className="dot"+(t<d?" done":"")+(t===d?" active":""),e.appendChild(n)}}function goStep(e){document.querySelectorAll(".step").forEach(e=>e.classList.remove("visible")),document.querySelector('.step[data-step="'+e+'"]').classList.add("visible"),d=e,y(),window.scrollTo({top:0,behavior:"smooth"})}function b(e){const t=parseFloat(document.getElementById(e).value);return isNaN(t)?0:t}function _(){document.getElementById("next1").disabled=!(b("age")>0)}function f(){const e="gross"===h.incomeMode?b("basic")>0:b("netSalary")>0;document.getElementById("next2").disabled=!e}function v(){document.getElementById("calcBtn").disabled=!(b("targetPrice")>0)}function S(){const e=Math.round(100*o(b("targetPrice"),h.homeLoanRank)),t=document.getElementById("marginPercent");t.max=e,p?b("marginPercent")>e&&(t.value=e):t.value=e,document.getElementById("marginHintText").innerHTML=m("margin_hint_pre")+'<b id="marginAutoValue">'+e+"%</b>"+m("margin_hint_post"),x()}function x(){const e=b("targetPrice"),t=b("marginPercent"),n=document.getElementById("livePreview");if(e>0&&t>0){const o=e*t/100,a=e-o;document.getElementById("liveLoanAmount").textContent=i(o),document.getElementById("liveDownpayment").textContent=i(a),n.style.display="block"}else n.style.display="none"}async function runCalculation(){const e=b("targetPrice"),t="gross"===h.incomeMode?b("basic"):0,n="net"===h.incomeMode?b("netSalary"):0,o="gross"===h.incomeMode?t>0:n>0;if(!b("age")||!o||!e)return void alert("gross"===h.incomeMode?m("alert_gross"):m("alert_net"));const a=document.getElementById("calcBtn");a.disabled=!0,a.textContent=m("calculating");const r={age:b("age"),homeLoanRank:h.homeLoanRank,isSarawakGovt:h.isSarawakGovt,basic:t,allowance:"gross"===h.incomeMode?b("allowance"):0,commission:b("commission"),netSalaryInput:n,carLoan:b("carLoan"),existingHomeLoan:b("existingHomeLoan"),personalLoan:b("personalLoan"),creditCard:b("creditCard"),ptptn:b("ptptn"),asbFinancing:b("asbFinancing"),bnplOther:b("bnplOther"),targetPrice:e,marginOverride:b("marginPercent")},i=s(r);I=r,M=i,w(r,i),document.getElementById("advisorText").textContent=C(r,i),document.querySelectorAll(".step").forEach(e=>e.classList.remove("visible")),document.getElementById("report").classList.add("visible"),window.scrollTo({top:0,behavior:"smooth"}),a.disabled=!1,a.textContent=m("calc_btn")}function w(e,t){const n=m("month_suffix"),o=m("year_suffix"),s=m("rate_suffix");document.getElementById("currentDsrNum").textContent=t.currentDSR.toFixed(1)+"%",document.getElementById("existingDebtsOut").textContent=i(t.existingDebts)+n,document.getElementById("incomeConsOut").textContent=i(t.incomeConservative)+n,document.getElementById("targetPriceOut").textContent=i(t.targetPrice),document.getElementById("marginOut").textContent=100*t.margin+"%",document.getElementById("tenureOut").textContent=t.tenure+o,document.getElementById("rateOut").textContent=t.rate+s,document.getElementById("loanAmountOut").textContent=i(t.loanAmount),document.getElementById("installmentOut").textContent=i(t.installment)+n;const l=Math.min(100,t.postDSR_conservative);document.getElementById("ledgerFill").style.width=l+"%";const c=a(t.postDSR_conservative),u=document.getElementById("tierBadge");u.textContent=r(c.tone),u.className="tier-badge tier-"+c.tone,document.getElementById("postDsrConsOut").textContent=t.postDSR_conservative.toFixed(1)+"%",document.getElementById("postDsrCommOut").textContent=t.postDSR_withCommission.toFixed(1)+"%";const d=document.getElementById("affordTableBody");d.innerHTML="",t.scenarios.forEach(e=>{const t=document.createElement("tr");t.innerHTML='<td class="label">'+e.ceiling+"% DSR</td><td>"+i(e.maxBudgetC)+"</td><td>"+i(e.maxBudgetW)+"</td>",d.appendChild(t)}),t.borneo?(document.getElementById("borneoCard").style.display="block",document.getElementById("borneoRateOut").textContent=t.borneo.rate+"% p.a.",document.getElementById("borneoMarginOut").textContent=m("borneo_margin_full"),document.getElementById("borneoTenureOut").textContent=t.borneo.tenure+o,document.getElementById("borneoLoanOut").textContent=i(t.borneo.loan),document.getElementById("borneoInstallmentOut").textContent=i(t.borneo.installment)+n,document.getElementById("borneoDsrOut").textContent=t.borneo.postDSR.toFixed(1)+"%"):document.getElementById("borneoCard").style.display="none",document.getElementById("waLink").href="https://wa.me/60176196938?text="+encodeURIComponent(k(e,t))}function R(e,t){const n=a(t.postDSR_conservative),o=[];return o.push("Hi Eason，我刚用你的DSR计算器算过，想看看这个价位有哪些项目。"),o.push(""),o.push("我的资料："),o.push("年龄："+e.age),o.push("目标房价："+i(t.targetPrice)),t.marginIsCustom&&o.push("贷款成数：我自己调到了 "+(100*t.margin).toFixed(0)+"%（银行最高能贷 "+(100*t.bankMaxMargin).toFixed(0)+"%），头期 "+i(t.downpayment)),o.push("认可收入（保守）："+i(t.incomeConservative)+"/月"),e.commission>0&&o.push("佣金/OT（平均）："+i(e.commission)+"/月"),o.push("现有负债："+i(t.existingDebts)+"/月"),o.push("预计月供："+i(t.installment)+"/月（"+t.tenure+"年, 参考利率"+t.rate+"%）"),o.push("买入后DSR："+t.postDSR_conservative.toFixed(0)+"%（"+n.label+"）"),"3plus"===e.homeLoanRank&&o.push("这是我第3套或以上的房贷"),e.isSarawakGovt&&o.push("身份：Sarawak州政府/法定机构/议会员工（Borneo Housing Loan方案DSR约"+(t.borneo?t.borneo.postDSR.toFixed(0):"-")+"%）"),o.join("\n")}function B(e,t){const n=a(t.postDSR_conservative),o=[];return o.push("Hi Eason, I just ran the numbers on your DSR calculator and wanted to see what's available at this price."),o.push(""),o.push("My details:"),o.push("Age: "+e.age),o.push("Target price: "+i(t.targetPrice)),t.marginIsCustom&&o.push("Margin of finance: I adjusted it to "+(100*t.margin).toFixed(0)+"% (bank max is "+(100*t.bankMaxMargin).toFixed(0)+"%), downpayment "+i(t.downpayment)),o.push("Recognized income (conservative): "+i(t.incomeConservative)+"/mo"),e.commission>0&&o.push("Commission/OT (average): "+i(e.commission)+"/mo"),o.push("Existing debt: "+i(t.existingDebts)+"/mo"),o.push("Estimated installment: "+i(t.installment)+"/mo ("+t.tenure+" yrs, reference rate "+t.rate+"%)"),o.push("Post-purchase DSR: "+t.postDSR_conservative.toFixed(0)+"% ("+r(n.tone)+")"),"3plus"===e.homeLoanRank&&o.push("This is my 3rd or later home loan"),e.isSarawakGovt&&o.push("Status: Sarawak state government/statutory body/council employee (Borneo Housing Loan DSR approx "+(t.borneo?t.borneo.postDSR.toFixed(0):"-")+"%)"),o.join("\n")}function k(e,t){return"en"===c?B(e,t):R(e,t)}function D(e,t){const n=a(t.postDSR_conservative);if("extreme"===n.tone)return"以你目前填的数字，这个价位跟你的收入差距非常大（DSR 超过 "+Math.round(t.postDSR_conservative)+'%），这已经不是"调整年限"或"处理负债"能拉回来的范围了。有两种可能：一是房价或收入哪里填错了（可以按下面「修改资料」检查一下），二是你是想先了解一下自己现在大概能负担的区间在哪——如果是后者，直接跟我聊会比在这里对数字快很多。';const o=t.postDSR_conservative-t.postDSR_withCommission,r=t.existingDebts>.25*t.incomeConservative,s=[];if("good"===n.tone?s.push("以你现在的数字，这间房子买下去 DSR 大概 "+t.postDSR_conservative.toFixed(0)+"%，算是舒服的区间，银行那边审查上问题不大。"):"mid"===n.tone?s.push("这间房子买下去 DSR 大概落在 "+t.postDSR_conservative.toFixed(0)+"%，中等偏紧，不是不行，但代表你之后现金流的弹性会变小。"):"warn"===n.tone?s.push("老实说，这间的 DSR 大概 "+t.postDSR_conservative.toFixed(0)+"%，偏紧，银行那边可能会卡，或者只批比较低的额度。"):s.push("这间房子以你现在的数字来看，DSR 会超过 "+t.postDSR_conservative.toFixed(0)+"%，压力真的偏大，直接申请大概率会被打回票。"),o>5&&s.push("值得注意的是，如果你的佣金/OT收入能稳定证明，DSR可以降到大概 "+t.postDSR_withCommission.toFixed(0)+"%——这中间差了快"+o.toFixed(0)+"个百分点，代表把收入证明整理好，比砍预算更划算。"),r&&"good"!==n.tone&&s.push("你现在的负债占收入比重不低，如果能先处理掉一部分（尤其是 tenure 短、月供占比高的），DSR 会明显松动。"),t.marginIsCustom){const e=t.targetPrice*t.bankMaxMargin-t.loanAmount;s.push("另外看到你把贷款成数调低到 "+(100*t.margin).toFixed(0)+"%（银行原本最高能贷到 "+(100*t.bankMaxMargin).toFixed(0)+"%），等于多拿了大概 "+i(e)+" 出来当头期——这笔钱不放贷款里，月供跟DSR会更轻松，但也代表这笔钱暂时不能拿去做别的用途，值不值得看你自己怎么权衡。")}if(t.borneo){t.postDSR_conservative-t.borneo.postDSR>3&&s.push("另外你符合 Sarawak 政府购屋计划资格，同一间房子走这个方案 DSR 只要 "+t.borneo.postDSR.toFixed(0)+"%，比商业银行低很多，这个选项你可能还没认真算过。")}return"good"===n.tone||"mid"===n.tone?s.push('真正要想的不是"买不买得起"，是现在不出手，之后房价跟利率变高的机会成本值不值得你等。'):s.push("这不代表这间房子跟你没缘分，可能是时机或者结构要调整——比如换年限、换项目、或者先处理负债。这些细节直接聊会比较清楚。"),s.join(" ")}function E(e,t){const n=a(t.postDSR_conservative);if("extreme"===n.tone)return"Based on what you've entered, this price is way beyond your current income (DSR over "+Math.round(t.postDSR_conservative)+"%) — this isn't something adjusting the tenure or clearing some debt can fix. Two possibilities: either the price or income was entered wrong (check via \"Edit Info\" below), or you're just trying to get a sense of what you can currently afford — if it's the latter, it'll be much faster to just chat with me directly than to keep tweaking numbers here.";const o=t.postDSR_conservative-t.postDSR_withCommission,r=t.existingDebts>.25*t.incomeConservative,s=[];if("good"===n.tone?s.push("Based on your numbers, buying this place puts your DSR at around "+t.postDSR_conservative.toFixed(0)+"% — a comfortable range, and banks shouldn't have much issue approving it."):"mid"===n.tone?s.push("Buying this place puts your DSR at around "+t.postDSR_conservative.toFixed(0)+"% — moderately tight. It's workable, but your cash flow flexibility afterward will shrink."):"warn"===n.tone?s.push("Honestly, this one's DSR comes out to around "+t.postDSR_conservative.toFixed(0)+"% — tight, and banks may either hesitate or only approve a lower amount."):s.push("Based on your numbers, this property would push your DSR past "+t.postDSR_conservative.toFixed(0)+"% — that's genuinely a lot of pressure, and a straight application would likely get rejected."),o>5&&s.push("Worth noting — if your commission/OT income can be reliably documented, your DSR could drop to around "+t.postDSR_withCommission.toFixed(0)+"%. That's a "+o.toFixed(0)+"-point difference, so getting your income proof in order is worth more than trimming your budget."),r&&"good"!==n.tone&&s.push("Your existing debt is a meaningful chunk of your income right now. Clearing even part of it first (especially short-tenure, high-installment ones) would loosen your DSR noticeably."),t.marginIsCustom){const e=t.targetPrice*t.bankMaxMargin-t.loanAmount;s.push("Also — you've lowered your margin of finance to "+(100*t.margin).toFixed(0)+"% (the bank's usual ceiling here is "+(100*t.bankMaxMargin).toFixed(0)+"%), meaning you're putting in roughly "+i(e)+" more as downpayment. Keeping that out of the loan eases your installment and DSR, but that money also isn't available for anything else in the meantime — whether that trade-off is worth it is really up to you.")}if(t.borneo){t.postDSR_conservative-t.borneo.postDSR>3&&s.push("You also qualify for the Sarawak government home-purchase scheme — the same property under that scheme brings your DSR down to just "+t.borneo.postDSR.toFixed(0)+"%, well below commercial bank rates. That's an option you may not have seriously run the numbers on yet.")}return"good"===n.tone||"mid"===n.tone?s.push("The real question isn't \"can I afford it\" — it's whether the opportunity cost of waiting, as prices and rates climb, is worth it to you."):s.push("This doesn't mean the property isn't right for you — it might just be a timing or structuring issue, like adjusting the tenure, switching projects, or clearing some debt first. Best to talk through the specifics directly."),s.join(" ")}function C(e,t){return"en"===c?E(e,t):D(e,t)}function editData(){document.getElementById("report").classList.remove("visible"),goStep(1)}function restartTool(){document.getElementById("report").classList.remove("visible"),document.querySelectorAll('input[type="number"]').forEach(e=>{"allowance"!==e.id&&"commission"!==e.id&&"marginPercent"!==e.id&&(e.value="")}),p=!1,_(),f(),v(),S(),goStep(1)}y(),document.getElementById("rank-choice").addEventListener("click",e=>{const t=e.target.closest(".choice-btn");t&&(document.querySelectorAll("#rank-choice .choice-btn").forEach(e=>e.classList.remove("selected")),t.classList.add("selected"),h.homeLoanRank=t.dataset.value,S())}),document.getElementById("govt-choice").addEventListener("click",e=>{const t=e.target.closest(".choice-btn");t&&(document.querySelectorAll("#govt-choice .choice-btn").forEach(e=>e.classList.remove("selected")),t.classList.add("selected"),h.isSarawakGovt="yes"===t.dataset.value)}),h.incomeMode="gross",document.getElementById("income-mode-choice").addEventListener("click",e=>{const t=e.target.closest(".choice-btn");if(!t)return;document.querySelectorAll("#income-mode-choice .choice-btn").forEach(e=>e.classList.remove("selected")),t.classList.add("selected"),h.incomeMode=t.dataset.value;const n=document.getElementById("income-mode-gross"),o=document.getElementById("income-mode-net");"net"===h.incomeMode?(n.style.display="none",o.style.display="block"):(n.style.display="block",o.style.display="none"),f()}),document.getElementById("marginPercent").addEventListener("input",()=>{p=!0,x()}),document.getElementById("marginResetBtn").addEventListener("click",()=>{p=!1,S()}),document.getElementById("age").addEventListener("input",_),document.getElementById("basic").addEventListener("input",f),document.getElementById("netSalary").addEventListener("input",f),document.getElementById("targetPrice").addEventListener("input",()=>{v(),S()}),S();let I=null,M=null;function L(e){c=e,document.querySelectorAll("#langToggle button").forEach(t=>{t.classList.toggle("active",t.dataset.lang===e)}),u(),S(),I&&M&&(w(I,M),document.getElementById("advisorText").textContent=C(I,M));const t=document.getElementById("calcBtn");document.getElementById("report").classList.contains("visible")||(t.textContent=m("calc_btn"))}document.getElementById("langToggle").addEventListener("click",e=>{const t=e.target.closest("button[data-lang]");t&&L(t.dataset.lang)}),L(function(){const p=new URLSearchParams(window.location.search).get("lang");return"en"===p||"zh"===p?p:((navigator.language||navigator.userLanguage||"").toLowerCase().indexOf("zh")===0?"zh":"en")}());</script>
+</body>
+</html>
